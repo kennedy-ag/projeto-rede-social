@@ -1,6 +1,28 @@
 from django.shortcuts import render, redirect
 from perfis.models import Perfil, Convite
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+
+
+
+
+class PerfilViewSet(viewsets.ModelViewSet):
+	queryset = Perfil.objects.all()
+	serializer_class = None
+
+	def get_serializer_class(self):
+		if self.request.method == 'GET':
+			return None
+		return super().get_serializer_class()
+	
+	def get_permissions(self):
+		if self.request.method == 'POST':
+			return (AllowAny(),)
+		return super().get_permissions()
+
+
+
 
 @login_required
 def index(request):
